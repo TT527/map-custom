@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+</head>
+<body>
+<div id="map" style="width: 1920px;height: 900px"></div>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+<script src="province.js"></script>
+<script src="jsArea.js"></script>
+<script type="module">
+    import {createCustomMap} from "../dist/mapCustom.js";
+    const dom = document.getElementById("map")
+    const {mapSvg,geoUtils,renderTextShapes} = createCustomMap({
+        echarts: echarts,
+        viewportSize: {
+            width: dom.offsetWidth,
+            height: dom.offsetHeight
+        },
+        fullGeoJson: provinceGeo,
+        regionGeoJson: JSAreaGeo
+    })
+    echarts.registerMap("custom-map", {svg: mapSvg});
+    const chart = echarts.init(dom)
+    let point = geoUtils.dataToPoint([118.7846,32.08513])
+    chart.setOption({
+        geo: [
+            {
+                map: 'custom-map',
+                roam: true,
+                label: {
+                    show: false,
+                    color: "#000a3c",
+                },
+                // width: dom.offsetWidth,
+                emphasis: {
+                    label: {
+                        show: false,
+                    },
+                    itemStyle: {
+                        areaColor: "#ff0101",
+                    },
+                }
+            },
+        ],
+        series: [
+            {
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                z: 2,
+                itemStyle: {color: 'red'},
+                symbolSize: 10,
+                data: [point]
+            },
+            {
+                type: 'custom',
+                coordinateSystem: 'geo',
+                data: [0],
+                renderItem: (params, api) => renderTextShapes(params, api, {
+                    style: {
+                        fill: 'black'
+                    }
+                })
+            }
+        ]
+    })
+    window.addEventListener('resize', () => {
+        chart.resize()
+    })
+</script>
+</body>
+</html>
