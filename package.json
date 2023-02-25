@@ -1,0 +1,25 @@
+{
+  "name": "map-custom",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
+  "main": "./dist/mapCustom.umd.cjs",
+  "module": "./dist/mapCustom.js",
+  "types": "./index.d.ts",
+  "exports": {
+    "types": "./index.d.ts",
+    "import": "./dist/mapCustom.js",
+    "require": "./dist/mapCustom.umd.cjs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^4.0.4"
+  }
+}
